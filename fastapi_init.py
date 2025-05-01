@@ -4,13 +4,15 @@ import argparse
 # Default structure for FastAPI project
 project_structure = {
     "app": {
-        "api": ["routes.py"],
-        "core": ["config.py"],
-        "models": [],
-        "services": [],
-        "utils": [],
+        "__init__.py": [],
+        "api": ["__init__.py", "routes.py"],
+        "core": ["__init__.py", "config.py"],
+        "models": ["__init__.py"],
+        "services": ["__init__.py"],
+        "utils": ["__init__.py"],
     }
 }
+
 
 def get_project_files(project_name):
     return {
@@ -78,7 +80,7 @@ services:
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ''',
 
-        "README.md": f'''# {project_name}
+        "PROJECT_README.md": f'''# {project_name}
 
 ## Installation
 
@@ -121,15 +123,22 @@ services:
     }
 
 def create_structure(base_path, project_name):
-    # Create directories
     for folder, subfolders in project_structure.items():
         folder_path = os.path.join(base_path, folder)
         os.makedirs(folder_path, exist_ok=True)
+
         for subfolder, files in subfolders.items():
-            subfolder_path = os.path.join(folder_path, subfolder)
-            os.makedirs(subfolder_path, exist_ok=True)
-            for file in files:
-                open(os.path.join(subfolder_path, file), "w").close()
+            # If subfolder is a file (e.g. "__init__.py" at top-level)
+            if isinstance(files, list):
+                subfolder_path = os.path.join(folder_path, subfolder)
+                os.makedirs(subfolder_path, exist_ok=True)
+                for file in files:
+                    file_path = os.path.join(subfolder_path, file)
+                    open(file_path, "w").close()
+            else:
+                # subfolder is actually a file
+                file_path = os.path.join(folder_path, subfolder)
+                open(file_path, "w").close()
 
 def create_files(base_path, project_name):
     # Get files with the provided project name
@@ -167,15 +176,18 @@ def main():
     if args.init:
         project_name = args.name if args.name else prompt_for_project_name()
 
-        # Create folder with the project name
-        base_path = os.path.join(os.getcwd(), project_name)
-        if not os.path.exists(base_path):
-            os.makedirs(base_path)
+        # Determine base path: if project_name is '.', use current directory
+        if args.name == "." or (not args.name and project_name == os.path.basename(os.getcwd())):
+            base_path = os.getcwd()
+        else:
+            base_path = os.path.join(os.getcwd(), project_name)
+            if not os.path.exists(base_path):
+                os.makedirs(base_path)
         
         print(f"Initializing FastAPI project: {project_name}...")
         create_structure(base_path, project_name)
         create_files(base_path, project_name)
-        print(f"✅ {project_name} project initialized successfully. Check README.md for instructions.")
+        print(f"✅ {project_name} project initialized successfully. Check PROJECT_README.md for instructions.")
     else:
         print("❌ No action specified. Use --init to generate the project.")
 
