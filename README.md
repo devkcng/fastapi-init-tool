@@ -4,10 +4,6 @@ This script initializes a FastAPI project with a predefined structure and config
 
 ## 🛠️ How to Use the Script
 
-Save the file as `fastapi_init.py`.
-
-Run the script to generate your FastAPI project:
-
 ### ⚙️ Prerequisites
 
 Before running the script, ensure the following:
