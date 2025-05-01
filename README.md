@@ -7,22 +7,37 @@ This script initializes a FastAPI project with a predefined structure and config
 Save the file as `fastapi_init.py`.
 
 Run the script to generate your FastAPI project:
+
 ### ⚙️ Prerequisites
 
 Before running the script, ensure the following:
 
 - **Python Version**: Python 3.10 or higher is installed on your system.
-- **Command Note**: Use `python3` instead of `python` if the latter doesn't work on your terminal.
 
 ### 🚀 Running the Script
+
+Clone this repository to your local machine:
+
+```bash
+git clone https://github.com/devkcng/fastapi-init-tool.git
+```
 
 To initialize your FastAPI project, execute the following command:
 
 ```bash
-python fastapi_init.py --init --name my_fastapi_app
+python fastapi-init-tool/fastapi_init.py --init
 ```
 
-Replace `my_fastapi_app` with your desired project name. The script will create a directory with the specified name and set up the following structure:
+> **Note**  
+>
+> - Use `python3` instead of `python` if you are on a system where Python 3 is not the default version.  
+> - You can specify a custom project name using the `--name` argument. For example:  
+>
+>   ```bash
+>   python fastapi_init.py --init --name my_fastapi_app
+>   ```
+
+The script will create a directory with the specified name and set up the following structure:
 
 ```
 my_fastapi_app/
@@ -42,19 +57,6 @@ my_fastapi_app/
 ├── .gitignore
 └── README.md
 ```
-
-## 📄 Example Content in README.md
-
-The `README.md` will contain installation instructions for:
-
-- **Linux/Mac**
-- **Windows**
-- **Using Docker**
-
-It will also include links to access the FastAPI app and Swagger UI:
-
-- **API**: [http://localhost:8000](http://localhost:8000)
-- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ## 🤝 Contributing and Feedback
 
