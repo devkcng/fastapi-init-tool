@@ -7,6 +7,16 @@ This script initializes a FastAPI project with a predefined structure and config
 Save the file as `fastapi_init.py`.
 
 Run the script to generate your FastAPI project:
+### ⚙️ Prerequisites
+
+Before running the script, ensure the following:
+
+- **Python Version**: Python 3.10 or higher is installed on your system.
+- **Command Note**: Use `python3` instead of `python` if the latter doesn't work on your terminal.
+
+### 🚀 Running the Script
+
+To initialize your FastAPI project, execute the following command:
 
 ```bash
 python fastapi_init.py --init --name my_fastapi_app
