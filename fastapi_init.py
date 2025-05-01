@@ -17,7 +17,7 @@ project_structure = {
 def get_project_files(project_name):
     return {
         "requirements.txt": "fastapi[all]\npython-dotenv\n",
-        ".env": f"ENV=development\nPROJECT_NAME={project_name}\n",
+        ".env.dev": f"ENV=development\nPROJECT_NAME={project_name}\n",
         ".gitignore": "__pycache__/\n.env\n.venv/\n*.pyc\n",
 
         "app/main.py": f'''from fastapi import FastAPI
@@ -57,11 +57,14 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app app
+# Copy the environment file
+COPY .env.dev .
+
+COPY . .
 
 EXPOSE 8000
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ''',
 
         "docker-compose.yml": '''version: '3.8'
@@ -71,13 +74,15 @@ services:
     build: .
     container_name: fastapi-ai
     volumes:
-      - ./app:/app
+      - .:/app
       - ./requirements.txt:/requirements.txt
     ports:
       - "8000:8000"
     environment:
       - ENV=development
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - .env.dev
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ''',
 
         "PROJECT_README.md": f'''# {project_name}
@@ -94,7 +99,7 @@ services:
 
 2. Run the server:
     ```bash
-    uvicorn main:app --reload
+    uvicorn app.main:app --reload
     ```
 
 ### On Windows
@@ -107,7 +112,7 @@ services:
 
 2. Run the server:
     ```powershell
-    uvicorn main:app --reload
+    uvicorn app.main:app --reload
     ```
 
 ### Using Docker
